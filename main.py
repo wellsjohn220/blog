@@ -179,13 +179,14 @@ def add_new_post():
             author=current_user,
             date=date.today().strftime("%B %d, %Y")
         )
-        db.session.add(new_post)
-        db.session.commit()
-        return redirect(url_for("get_all_posts"))
+        try:
+            db.session.add(new_post)
+            db.session.commit()
+            return redirect(url_for("get_all_posts"))
+        except:
+            return 'There was an issue adding your task'
 
     return render_template("make-post.html", form=form, current_user=current_user)
-
-
 
 
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
